@@ -1,0 +1,25 @@
+{
+  "name": "routiq",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n web,api -c cyan,green \"npm run dev -w @routiq/web\" \"npm run dev -w @routiq/api\"",
+    "build": "npm run build -w @routiq/api && npm run build -w @routiq/web",
+    "lint": "npm run lint -w @routiq/api && npm run lint -w @routiq/web",
+    "typecheck": "npm run typecheck -w @routiq/api && npm run typecheck -w @routiq/web",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.12.0",
+    "prettier": "^3.9.10",
+    "typescript-eslint": "^8.71.2"
+  }
+}

@@ -1,0 +1,22 @@
+import Fastify, { type FastifyError, type FastifyInstance } from 'fastify';
+import { testApi } from './routes/test-api.js';
+
+export function buildApp(): FastifyInstance {
+  const app = Fastify({
+    logger: true,
+  });
+
+  app.setErrorHandler((error: FastifyError, request, reply) => {
+    request.log.error(error);
+    const statusCode = error.statusCode ?? 500;
+    reply.status(statusCode).send({
+      status: 'error',
+      message: error.message || 'Internal Server Error',
+    });
+  });
+
+  // Register routes
+  app.register(testApi)
+
+  return app;
+}
