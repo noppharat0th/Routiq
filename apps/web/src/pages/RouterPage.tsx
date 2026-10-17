@@ -1,30 +1,34 @@
-import { AlertCircle, Router, X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { AlertCircle, X } from 'lucide-react';
 import { DeviceTable } from '@/components/DeviceTable';
-import { RouterConnection } from '@/components/RouterConnection';
 import { RouterLoginForm } from '@/components/RouterLoginForm';
+import { RouterSessionStatus } from '@/components/RouterSessionStatus';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { useRouterController } from '@/controllers/use-router-controller';
-import { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 export function RouterPage() {
   const controller = useRouterController();
-  const initialized = useRef(false)
+  const initialized = useRef(false);
 
   useEffect(() => {
-    if (initialized.current) {
-      return
+    if (initialized.current || controller.session) {
+      return;
     }
 
-    initialized.current = true
-    void controller.connect()
-  }, [controller.connect])
+    initialized.current = true;
+    void controller.connect();
+  }, [controller.connect, controller.session]);
 
   return (
-    <main className="flex items-center min-h-screen bg-muted/30">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-
+    <section
+      className={cn(
+        'bg-muted/30 flex flex-1 items-center',
+        !controller.authenticated && 'min-h-svh'
+      )}
+    >
+      <div className="mx-auto flex w-full flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         {controller.error && (
           <Alert variant="destructive">
             <AlertCircle aria-hidden="true" />
@@ -43,12 +47,13 @@ export function RouterPage() {
           </Alert>
         )}
 
-        {/* {!controller.session && (
-          <RouterConnection
+        {!controller.session && (
+          <RouterSessionStatus
             connecting={controller.pendingAction === 'session'}
-            onConnect={() => void controller.connect()}
+            hasError={controller.error !== null}
+            onRetry={() => void controller.connect()}
           />
-        )} */}
+        )}
 
         {controller.session && !controller.authenticated && (
           <RouterLoginForm
@@ -69,6 +74,6 @@ export function RouterPage() {
           />
         )}
       </div>
-    </main>
+    </section>
   );
 }
