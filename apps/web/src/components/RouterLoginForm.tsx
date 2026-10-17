@@ -52,7 +52,7 @@ export function RouterLoginForm({
   }
 
   return (
-    <Card className="mx-auto w-full max-w-lg">
+    <Card className="w-full max-w-lg">
       <CardHeader>
         <CardTitle>Sign in to Router</CardTitle>
         <CardDescription>

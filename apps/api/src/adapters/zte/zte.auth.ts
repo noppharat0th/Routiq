@@ -21,8 +21,12 @@ function extractSessionToken(html: string): string | null {
     .filter((token): token is string => Boolean(token))
     .map((token) =>
       token
-        .replace(/\\x([0-9a-f]{2})/gi, (_, hex: string) => String.fromCharCode(Number.parseInt(hex, 16)))
-        .replace(/\\u([0-9a-f]{4})/gi, (_, hex: string) => String.fromCharCode(Number.parseInt(hex, 16)))
+        .replace(/\\x([0-9a-f]{2})/gi, (_, hex: string) =>
+          String.fromCharCode(Number.parseInt(hex, 16))
+        )
+        .replace(/\\u([0-9a-f]{4})/gi, (_, hex: string) =>
+          String.fromCharCode(Number.parseInt(hex, 16))
+        )
     );
 
   const scriptToken = scriptTokens.at(-1);

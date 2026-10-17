@@ -1,4 +1,4 @@
-import { LoaderCircle, LogOut, RefreshCw } from 'lucide-react';
+import { LoaderCircle, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,13 +10,11 @@ interface DeviceTableProps {
   devices: NetworkDevice[];
   pendingAction: RouterPendingAction;
   onRefresh: () => void;
-  onDisconnect: () => void;
 }
 
-export function DeviceTable({ devices, pendingAction, onRefresh, onDisconnect }: DeviceTableProps) {
+export function DeviceTable({ devices, pendingAction, onRefresh }: DeviceTableProps) {
   const busy = pendingAction !== null;
   const refreshing = pendingAction === 'devices';
-  const disconnecting = pendingAction === 'logout';
 
   return (
     <Card>
@@ -31,24 +29,14 @@ export function DeviceTable({ devices, pendingAction, onRefresh, onDisconnect }:
           <CardDescription>Devices reported by DHCP in the current router session</CardDescription>
         </div>
 
-        <div className="flex gap-2">
-          <Button disabled={busy} onClick={onRefresh} type="button" variant="outline">
-            {refreshing ? (
-              <LoaderCircle aria-hidden="true" className="animate-spin" />
-            ) : (
-              <RefreshCw aria-hidden="true" />
-            )}
-            Refresh
-          </Button>
-          <Button disabled={busy} onClick={onDisconnect} type="button" variant="destructive">
-            {disconnecting ? (
-              <LoaderCircle aria-hidden="true" className="animate-spin" />
-            ) : (
-              <LogOut aria-hidden="true" />
-            )}
-            Sign out
-          </Button>
-        </div>
+        <Button disabled={busy} onClick={onRefresh} type="button" variant="outline">
+          {refreshing ? (
+            <LoaderCircle aria-hidden="true" className="animate-spin" />
+          ) : (
+            <RefreshCw aria-hidden="true" />
+          )}
+          Refresh
+        </Button>
       </CardHeader>
 
       <CardContent>

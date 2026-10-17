@@ -1,4 +1,5 @@
-import { Gauge, Router, Settings, ShieldCheck, Waypoints } from 'lucide-react';
+import { Gauge, LoaderCircle, LogOut, Settings, ShieldCheck, Waypoints } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router';
 import {
   Sidebar,
   SidebarContent,
@@ -11,16 +12,23 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { routes } from '@/routes/route-paths';
 
 const navigationItems = [
-  { title: 'Dashboard', icon: Gauge, available: false },
-  { title: 'Router Management', icon: Router, available: true },
-  { title: 'Network Devices', icon: Waypoints, available: false },
-  { title: 'Security', icon: ShieldCheck, available: false },
-  { title: 'Settings', icon: Settings, available: false },
+  { title: 'Dashboard', icon: Gauge, path: routes.dashboard },
+  { title: 'Network Devices', icon: Waypoints, path: routes.devices },
+  { title: 'Security', icon: ShieldCheck, path: routes.security },
+  { title: 'Settings', icon: Settings, path: routes.settings },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  signingOut: boolean;
+  onSignOut: () => void;
+}
+
+export function AppSidebar({ signingOut, onSignOut }: AppSidebarProps) {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -31,13 +39,14 @@ export function AppSidebar() {
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    aria-current={item.available ? 'page' : undefined}
-                    disabled={!item.available}
-                    isActive={item.available}
-                    tooltip={item.available ? item.title : `${item.title} - Coming soon`}
+                    asChild
+                    isActive={location.pathname === item.path}
+                    tooltip={item.title}
                   >
-                    <item.icon aria-hidden="true" />
-                    <span>{item.title}</span>
+                    <NavLink to={item.path}>
+                      <item.icon aria-hidden="true" />
+                      <span>{item.title}</span>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -47,9 +56,18 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <p className="text-sidebar-foreground/60 px-2 text-xs group-data-[collapsible=icon]:hidden">
-          Router Management MVP
-        </p>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton disabled={signingOut} onClick={onSignOut} tooltip="Sign out">
+              {signingOut ? (
+                <LoaderCircle aria-hidden="true" className="animate-spin" />
+              ) : (
+                <LogOut aria-hidden="true" />
+              )}
+              <span>{signingOut ? 'Signing out...' : 'Sign out'}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
