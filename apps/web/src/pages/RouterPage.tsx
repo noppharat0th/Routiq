@@ -6,9 +6,20 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useRouterController } from '@/controllers/use-router-controller';
+import { useEffect, useRef } from 'react';
 
 export function RouterPage() {
   const controller = useRouterController();
+  const initialized = useRef(false)
+
+  useEffect(() => {
+    if (initialized.current) {
+      return
+    }
+
+    initialized.current = true
+    void controller.connect()
+  }, [controller.connect])
 
   return (
     <main className="flex items-center min-h-screen bg-muted/30">
