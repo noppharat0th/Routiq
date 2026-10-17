@@ -1,5 +1,5 @@
 import Fastify, { type FastifyError, type FastifyInstance } from 'fastify';
-import { testApi } from './routes/test-api.js';
+import { RouterApi } from './routes/router.js';
 
 export function buildApp(): FastifyInstance {
   const app = Fastify({
@@ -16,7 +16,7 @@ export function buildApp(): FastifyInstance {
   });
 
   // Register routes
-  app.register(testApi)
+  app.register(RouterApi);
 
   return app;
 }
