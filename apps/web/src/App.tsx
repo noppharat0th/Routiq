@@ -174,7 +174,7 @@ export default function App() {
 
       {!session && (
         <section>
-          <h2>เชื่อมต่อ Router</h2>
+          <h2>connect Router</h2>
           <button type="button" onClick={() => void createSession()} disabled={pendingAction !== null}>
             {pendingAction === 'session' ? 'กำลังเชื่อมต่อ...' : 'เชื่อมต่อ Router'}
           </button>
@@ -183,7 +183,7 @@ export default function App() {
 
       {session && !authenticated && (
         <section>
-          <h2>เข้าสู่ระบบ Router</h2>
+          <h2>login Router</h2>
 
           <form onSubmit={(event) => void handleLogin(event)}>
             <p>
@@ -228,7 +228,7 @@ export default function App() {
             </p>
 
             <button type="submit" disabled={pendingAction !== null}>
-              {pendingAction === 'login' ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+              {pendingAction === 'login' ? 'loading' : 'login'}
             </button>{' '}
 
             <button type="button" onClick={() => void createSession()} disabled={pendingAction !== null}>
@@ -240,15 +240,14 @@ export default function App() {
 
       {session && authenticated && (
         <section>
-          <h2>อุปกรณ์ในเครือข่าย</h2>
-          <p>พบ {devices.length} รายการ</p>
+          <h2>device</h2>
 
           <button
             type="button"
             onClick={() => void loadDevices(session.sessionId)}
             disabled={pendingAction !== null}
           >
-            {pendingAction === 'devices' ? 'loading' : 'logout'}
+            {pendingAction === 'devices' ? 'loading' : 'reflesh'}
           </button>{' '}
 
           <button type="button" onClick={() => void closeSession()} disabled={pendingAction !== null}>
