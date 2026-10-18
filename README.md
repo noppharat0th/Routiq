@@ -1,5 +1,8 @@
 # Routiq
 
+<img width="1893" height="949" alt="Screenshot 2026-10-18 014856" src="https://github.com/user-attachments/assets/48d68ade-c2a8-4599-8002-a6c852b3d06e" />
+
+
 Routiq is a local dashboard for managing a ZTE F6107A router. It connects to the router interface
 at `192.168.1.1` through the project API. Router credentials and data are not sent to an external
 service.
