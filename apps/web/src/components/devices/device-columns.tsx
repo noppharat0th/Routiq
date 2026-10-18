@@ -46,11 +46,20 @@ export const deviceColumns = columnHelper.columns([
       />
     ),
   }),
-  columnHelper.accessor((device) => device.name || '', {
+  columnHelper.accessor((device) => device.displayName || device.name || '', {
     id: 'name',
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Device" />,
-    cell: ({ row }) => <span className="font-medium">{row.original.name || 'Unknown device'}</span>,
+    cell: ({ row }) => (
+      <div>
+        <span className="font-medium">
+          {row.original.displayName || row.original.name || 'Unknown device'}
+        </span>
+        {row.original.displayName && row.original.name && (
+          <p className="text-muted-foreground text-xs">Router name: {row.original.name}</p>
+        )}
+      </div>
+    ),
   }),
   columnHelper.accessor((device) => device.ipAddress || '', {
     id: 'ipAddress',

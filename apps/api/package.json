@@ -8,7 +8,11 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src"
+    "lint": "eslint src tests scripts",
+    "test": "tsx --test --test-isolation=none tests/zte.parser.test.ts tests/api.routes.test.ts",
+    "smoke:router": "tsx scripts/router-smoke.ts",
+    "audit:router": "tsx scripts/zte-endpoint-audit.ts",
+    "probe:router": "tsx scripts/zte-readonly-probe.ts"
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.2",

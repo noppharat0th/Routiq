@@ -5,9 +5,11 @@ import { RouterErrorAlert } from '@/components/RouterErrorAlert';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useRouterController } from '@/controllers/use-router-controller';
+import { useDeviceAutoRefresh } from '@/hooks/use-device-auto-refresh';
 
 export function MainLayout() {
   const { clearError, disconnect, error, pendingAction } = useRouterController();
+  useDeviceAutoRefresh();
 
   return (
     <SidebarProvider>

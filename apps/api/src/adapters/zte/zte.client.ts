@@ -20,6 +20,7 @@ export class ZteClient {
     this.baseUrl = url.origin;
   }
 
+  // Send a request with the current router session.
   private async request(path: string, options: RequestInit = {}): Promise<Response> {
     const url = new URL(path, this.baseUrl);
     const cookie = await this.session.getCookieHeader(url.toString());

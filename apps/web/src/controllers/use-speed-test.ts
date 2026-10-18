@@ -56,6 +56,7 @@ export function useSpeedTest() {
     setPhase('latency');
     startedAtRef.current = performance.now();
 
+    // Use larger samples to measure fast connections accurately.
     const test = new SpeedTest({
       autoStart: false,
       measurements: [

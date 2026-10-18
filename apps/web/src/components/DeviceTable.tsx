@@ -1,8 +1,10 @@
+import { useMemo } from 'react';
 import { LoaderCircle, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { NetworkDevice, RouterPendingAction } from '@/models/router.model';
+import { useDeviceTrustStore } from '@/stores/device-trust.store';
 import { DataTable } from './data-table/DataTable';
 import { deviceColumnLabels, deviceColumns } from './devices/device-columns';
 
@@ -13,8 +15,13 @@ interface DeviceTableProps {
 }
 
 export function DeviceTable({ devices, pendingAction, onRefresh }: DeviceTableProps) {
+  const deviceAliases = useDeviceTrustStore((state) => state.deviceAliases);
   const busy = pendingAction !== null;
   const refreshing = pendingAction === 'devices';
+  const displayDevices = useMemo(
+    () => devices.map((device) => ({ ...device, displayName: deviceAliases[device.id] })),
+    [deviceAliases, devices]
+  );
 
   return (
     <Card>
@@ -43,7 +50,7 @@ export function DeviceTable({ devices, pendingAction, onRefresh }: DeviceTablePr
         <DataTable
           columnLabels={deviceColumnLabels}
           columns={deviceColumns}
-          data={devices}
+          data={displayDevices}
           emptyMessage="No devices match your search."
           getRowId={(device) => device.id}
           searchPlaceholder="Search by name, IP address, MAC address, or interface..."

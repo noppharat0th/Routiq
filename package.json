@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -k -n web,api -c cyan,green \"npm run dev -w @routiq/web\" \"npm run dev -w @routiq/api\"",
+    "dev": "concurrently -k -n web,api -c cyan,green \"npm run dev -w @routiq/web\" \"node --watch --import tsx apps/api/src/server.ts\"",
     "build": "npm run build -w @routiq/api && npm run build -w @routiq/web",
     "lint": "npm run lint -w @routiq/api && npm run lint -w @routiq/web",
     "typecheck": "npm run typecheck -w @routiq/api && npm run typecheck -w @routiq/web",
+    "test": "npm run test -w @routiq/api",
     "format": "prettier --check .",
     "format:fix": "prettier --write ."
   },

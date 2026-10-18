@@ -15,6 +15,7 @@ const parser = new XMLParser({
   parseTagValue: false,
 });
 
+// Extract the token used by authenticated ZTE requests.
 function extractSessionToken(html: string): string | null {
   const scriptTokens = [...html.matchAll(/\b_sessionTmpToken\s*=\s*(["'])(.*?)\1/g)]
     .map((match) => match[2])
@@ -109,8 +110,6 @@ export class ZteAuth {
       throw new Error(data.loginErrMsg || 'Router rejected login. Check credentials or CAPTCHA.');
     }
 
-    // ZTE requires a GET / after login to activate the session
-    // Without this, all subsequent API calls return SessionTimeout
     const authenticatedPage = await this.client.openLoginPage();
     const pageSessionToken = extractSessionToken(authenticatedPage);
     if (pageSessionToken) {

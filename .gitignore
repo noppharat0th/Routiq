@@ -32,6 +32,7 @@ pnpm-debug.log*
 # Runtime data & testing
 coverage/
 *.lcov
+router-captcha.jpg
 
 # OS & Editor
 .DS_Store

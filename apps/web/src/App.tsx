@@ -1,5 +1,10 @@
+import { RouterSessionBootstrap } from '@/components/RouterSessionBootstrap';
 import { AppRouter } from '@/routes/app-router';
 
 export default function App() {
-  return <AppRouter />;
+  return (
+    <RouterSessionBootstrap>
+      <AppRouter />
+    </RouterSessionBootstrap>
+  );
 }

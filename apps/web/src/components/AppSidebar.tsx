@@ -1,4 +1,12 @@
-import { Gauge, LoaderCircle, LogOut, Settings, ShieldCheck, Waypoints } from 'lucide-react';
+import {
+  Gauge,
+  LoaderCircle,
+  LogOut,
+  Network,
+  Settings,
+  ShieldCheck,
+  Waypoints,
+} from 'lucide-react';
 import { NavLink, useLocation } from 'react-router';
 import {
   Sidebar,
@@ -17,6 +25,7 @@ import { routes } from '@/routes/route-paths';
 const navigationItems = [
   { title: 'Dashboard', icon: Gauge, path: routes.dashboard },
   { title: 'Network Devices', icon: Waypoints, path: routes.devices },
+  { title: 'Network Insights', icon: Network, path: routes.network },
   { title: 'Security', icon: ShieldCheck, path: routes.security },
   { title: 'Settings', icon: Settings, path: routes.settings },
 ];

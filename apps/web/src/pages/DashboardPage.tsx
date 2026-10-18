@@ -1,7 +1,7 @@
-import { Network, Router, Waypoints } from 'lucide-react';
+import { Network, Waypoints } from 'lucide-react';
 import { Link } from 'react-router';
+import { RouterStatusOverview } from '@/components/RouterStatusOverview';
 import { SpeedTestCard } from '@/components/SpeedTestCard';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,11 +12,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { routes } from '@/routes/route-paths';
+import { useDeviceTrustStore } from '@/stores/device-trust.store';
 import { useRouterStore } from '@/stores/router.store';
 
 export function DashboardPage() {
   const devices = useRouterStore((state) => state.devices);
   const session = useRouterStore((state) => state.session);
+  const status = useRouterStore((state) => state.status);
+  const deviceAliases = useDeviceTrustStore((state) => state.deviceAliases);
   const namedDevices = devices.filter((device) => device.name).length;
 
   return (
@@ -28,20 +31,9 @@ export function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-sm font-medium">Router status</CardTitle>
-            <Router aria-hidden="true" className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <Badge>Connected</Badge>
-            <p className="text-muted-foreground mt-2 text-xs">
-              Session {session?.sessionId.slice(0, 8) ?? 'Unavailable'}
-            </p>
-          </CardContent>
-        </Card>
+      <RouterStatusOverview status={status} />
 
+      <div className="grid gap-4 sm:grid-cols-2">
         <Card>
           <CardHeader className="flex-row items-center justify-between space-y-0">
             <CardTitle className="text-sm font-medium">DHCP devices</CardTitle>
@@ -65,6 +57,13 @@ export function DashboardPage() {
         </Card>
       </div>
 
+      <p className="text-muted-foreground text-xs">
+        Router {status?.system.modelName ?? session?.router.name ?? 'Unavailable'} · Uptime{' '}
+        {status?.system.uptimeSeconds === null || status?.system.uptimeSeconds === undefined
+          ? 'unavailable'
+          : `${Math.floor(status.system.uptimeSeconds / 86_400)} days`}
+      </p>
+
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(240px,1fr)_2fr]">
         <SpeedTestCard />
 
@@ -82,7 +81,7 @@ export function DashboardPage() {
                   <div className="flex items-center justify-between gap-4 p-3" key={device.id}>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium">
-                        {device.name || 'Unknown device'}
+                        {deviceAliases[device.id] || device.name || 'Unknown device'}
                       </p>
                       <p className="text-muted-foreground truncate text-xs">{device.macAddress}</p>
                     </div>
